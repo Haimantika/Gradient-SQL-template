@@ -77,19 +77,9 @@ Always prioritize safety and provide helpful, accurate responses."""
             # Simple chat implementation that generates data based on keywords
             user_input_lower = user_input.lower()
             
-            # Check if this is a data generation request
-            generation_keywords = ['generate', 'create', 'mock', 'fake', 'test data', 'synthetic']
-            if any(keyword in user_input_lower for keyword in generation_keywords):
-                return self._generate_data_from_request(user_input)
-            
-            # Use Gradient AI for general responses
-            try:
-                # Try to use Gradient AI answer method without source
-                response = self.gradient.answer(question=user_input)
-                return str(response)
-            except Exception as e:
-                # Fall back to data generation for any request
-                return self._generate_data_from_request(user_input)
+            # For now, use data generation for all requests to ensure reliability
+            # This avoids Gradient AI API issues while still providing useful functionality
+            return self._generate_data_from_request(user_input)
         
         def _generate_data_from_request(self, user_input):
             # Simple data generation based on keywords
@@ -100,7 +90,7 @@ Always prioritize safety and provide helpful, accurate responses."""
             count_match = re.search(r'(\d+)', user_input)
             count = int(count_match.group(1)) if count_match else 10
             
-            # Determine data type
+            # Determine data type and special handling
             if 'user' in user_input_lower:
                 data = self.sql_tools.generator.generate_users(count)
                 table_name = 'users'
@@ -108,7 +98,11 @@ Always prioritize safety and provide helpful, accurate responses."""
                 data = self.sql_tools.generator.generate_orders(count)
                 table_name = 'orders'
             elif 'payment' in user_input_lower or 'transaction' in user_input_lower:
-                data = self.sql_tools.generator.generate_payment_transactions(count)
+                # Check if user wants failed transactions specifically
+                if 'failed' in user_input_lower:
+                    data = self.sql_tools.generator.generate_payment_transactions(count, include_failed=True)
+                else:
+                    data = self.sql_tools.generator.generate_payment_transactions(count)
                 table_name = 'payment_transactions'
             elif 'product' in user_input_lower:
                 data = self.sql_tools.generator.generate_products(count)
@@ -120,7 +114,14 @@ Always prioritize safety and provide helpful, accurate responses."""
             # Generate SQL inserts
             sql_inserts = self.sql_tools.generator.to_sql_inserts(data, table_name)
             
-            return f"Generated {len(data)} {table_name}:\n\n" + '\n'.join(sql_inserts[:5]) + (f"\n... and {len(sql_inserts)-5} more" if len(sql_inserts) > 5 else "")
+            # Provide a more helpful response
+            response = f"✅ Generated {len(data)} {table_name} records:\n\n"
+            response += "📋 SQL INSERT Statements:\n"
+            response += '\n'.join(sql_inserts[:5])
+            if len(sql_inserts) > 5:
+                response += f"\n... and {len(sql_inserts)-5} more statements"
+            
+            return response
     
     AGENT_AVAILABLE = True
 except Exception as e:
