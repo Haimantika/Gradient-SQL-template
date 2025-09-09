@@ -84,21 +84,12 @@ Always prioritize safety and provide helpful, accurate responses."""
             
             # Use Gradient AI for general responses
             try:
-                messages = [
-                    {"role": "system", "content": self.system_prompt},
-                    {"role": "user", "content": user_input}
-                ]
-                
-                response = self.gradient.chat_complete(
-                    model="nous-hermes-2-mixtral-8x7b-dpo",
-                    messages=messages,
-                    max_tokens=1000
-                )
-                
-                return response.choices[0].message.content
-                
+                # Try to use Gradient AI answer method without source
+                response = self.gradient.answer(question=user_input)
+                return str(response)
             except Exception as e:
-                return f"Error processing request: {str(e)}"
+                # Fall back to data generation for any request
+                return self._generate_data_from_request(user_input)
         
         def _generate_data_from_request(self, user_input):
             # Simple data generation based on keywords
