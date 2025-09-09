@@ -1,92 +1,69 @@
-# SQL Assistant Agent Template with Synthetic Data Generation
+# SQL Agent with Synthetic Data Generation
 
-The SQL Assistant Agent connects to your existing MySQL database and translates natural language questions into SQL queries, then analyzes the results. The agent dynamically fetches your database schema to craft intelligent queries and is restricted to read-only operations for security.
+A Gradient AI-powered agent that generates realistic mock datasets and produces safe SQL INSERT scripts. Designed for developers and testers to bootstrap staging environments with synthetic data without touching production systems.
 
-**NEW FEATURE**: This extended version includes synthetic data generation capabilities that create realistic mock datasets for testing and development without touching production data.
+> **Based on**: [DigitalOcean Gradient Agent Templates - SQL Agent](https://github.com/digitalocean/gradient-agent-templates/tree/main/sql-agent)  
+> **Enhanced with**: Synthetic data generation capabilities for safe testing and development
+
+## Features
+- **Gradient AI Integration**: Natural language processing for data generation requests
+- **Synthetic Data Generation**: users, orders, payments, products, and custom schemas
+- **Multiple Output Formats**: SQL INSERT statements, CSV, and JSON exports
+- **Safety First**: Never touches production data; designed for staging/test bootstraps
+- **Interactive Chat**: Conversational interface for data generation and SQL assistance
 
 ## Requirements
+- Python 3.10+
+- DigitalOcean account and Gradient AI credentials
+- `pip install -r requirements.txt`
 
-Before deploying this agent, ensure you have:
+## Quick Start
 
-1. **Tools installed:**
-   - `pydo` and `doctl`
+### 1. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
 
-2. **DigitalOcean access:**
-   - Valid DigitalOcean API token
-   - Sufficient privileges to deploy DigitalOcean Functions and Gradient™ AI Platform agents
-   - Optional: Valid `doctl` context
+### 2. Set Up Gradient AI Credentials
+```bash
+cp env.example .env
+# Edit .env and add your Gradient AI credentials:
+# GRADIENT_ACCESS_TOKEN=your_token_here
+# GRADIENT_WORKSPACE_ID=your_workspace_id_here
+```
 
-3. **Database:**
-   - Existing deployed MySQL database
-   - Database user with privileges to create new users
+### 3. Run the Interactive Agent
+```bash
+python3 main.py
+```
 
-4. **Terms & Conditions:**
-   - Accepted Terms & Conditions for using Llama 3.3 70B
-
-## How It Works
-
-The deployment follows these steps:
-
-1. **Database Setup** - Creates a read-only user with specified credentials
-2. **Function Deployment** - Deploys secure web functions via `doctl`:
-   - `get_schema` - Fetches database schema information
-   - `execute_query` - Executes SELECT queries safely
-   - `generate_synthetic_data` - Generates realistic mock data for testing
-3. **Agent Creation** - Creates the Gradient AI Platform agent using `pydo`
-4. **Tool Integration** - Attaches the database functions to the agent
-
-## Synthetic Data Generation Features
-
-The agent can now generate realistic mock data for:
-
-- **Users**: Names, emails, phones, addresses, creation dates
-- **Orders**: Amounts, dates, statuses, product information
-- **Payments**: Transaction details, failure scenarios, payment methods
-- **Products**: Names, descriptions, prices, categories, SKUs
-
-### Example Usage
-
-Once deployed, you can ask the agent:
-
+### 4. Start Chatting!
+Type natural language requests like:
 - "Generate 10 mock users with random names and emails"
-- "Create 20 orders with amounts between $10-$500 for 2024"
+- "Create 20 orders with amounts between $10-$500 in 2024"
 - "Give me 5 failed payment transactions"
-- "Generate 15 products as SQL INSERT statements"
+- "Export 15 products as CSV"
 
-The agent will provide both the generated data and ready-to-use SQL INSERT statements for your testing environment.
+## Project Structure
+- `src/synthetic_data_generator.py` - Core data generator
+- `src/sql_tools.py` - SQL safety helpers (SELECT-only logic, formatting)
+- `src/agent.py` - Interactive agent (uses Gradient AI)
+- `src/config.py` - Env settings
+- `main.py` - Optional agent entrypoint
 
-## Usage
+## Relationship to Original Template
 
-### Basic deployment:
-```bash
-python deploy_template.py \
-  --token YOUR_DIGITALOCEAN_TOKEN \
-  --context DOCTL_CONTEXT \
-  --project-id YOUR_PROJECT_ID \
-  --region region\
-  --db-host your_db_host \
-  --db-port your_db_port \
-  --db-name your_database \
-  --db-admin-user admin-user \
-  --db-admin-password your_password \
-  --agent-user-id agent_user_id \
-  --namespace-label your-function-namespace-label\
-```
+This project extends the [DigitalOcean Gradient Agent Templates SQL Agent](https://github.com/digitalocean/gradient-agent-templates/tree/main/sql-agent) with:
 
-### Using environment file:
-```bash
-python deploy_template.py --env-file production.env 
-```
-See the sample env file for an example
+- **Synthetic Data Generation**: Create realistic mock datasets without touching production data
+- **Multiple Output Formats**: SQL INSERT statements, CSV, and JSON exports
+- **Enhanced Safety**: Production data protection and query validation
+- **Standalone Operation**: Works independently for data generation
+- **Custom Schema Support**: Generate data for any table structure
 
-
-### Get help:
-```bash
-python deploy_template.py --help
-```
+The original template focuses on querying existing databases, while this enhanced version focuses on **generating safe test data** for development and staging environments.
 
 ## Notes
-
-- The deployment will fail if there are existing resources provisioned with the names provided. 
-- Model T&C must be accepted before running this script
-- Unlike terraform deployments, this deployment script cannot be rolled back if a deployment fails midway. 
+- This repo is trimmed for core functionality only.
+- Use `env.example` as a guide; never commit real `.env` files.
+- Generated data is synthetic; do not treat as real user information. 

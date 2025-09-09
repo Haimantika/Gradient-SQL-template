@@ -3,3 +3,5 @@ openai
 python-dotenv
 pydo
 faker>=19.0.0
+gradientai
+pandas
