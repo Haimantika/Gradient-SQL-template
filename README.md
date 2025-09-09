@@ -6,11 +6,13 @@ A Gradient AI-powered agent that generates realistic mock datasets and produces 
 > **Enhanced with**: Synthetic data generation capabilities for safe testing and development
 
 ## Features
-- **Gradient AI Integration**: Natural language processing for data generation requests
-- **Synthetic Data Generation**: users, orders, payments, products, and custom schemas
-- **Multiple Output Formats**: SQL INSERT statements, CSV, and JSON exports
-- **Safety First**: Never touches production data; designed for staging/test bootstraps
-- **Interactive Chat**: Conversational interface for data generation and SQL assistance
+- **🤖 Natural Language Chat**: Conversational AI interface for data generation requests
+- **🧠 Gradient AI Integration**: Smart understanding of complex data generation needs
+- **📊 Synthetic Data Generation**: users, orders, payments, products, and custom schemas
+- **💾 Multiple Output Formats**: SQL INSERT statements, CSV, and JSON exports
+- **🔒 Safety First**: Never touches production data; designed for staging/test bootstraps
+- **⚡ Real-time Generation**: Instant data creation with live preview
+- **🎯 Dual Interface**: Both chat and manual configuration options
 
 ## Requirements
 - Python 3.10+
@@ -32,24 +34,70 @@ cp env.example .env
 # GRADIENT_WORKSPACE_ID=your_workspace_id_here
 ```
 
-### 3. Run the Interactive Agent
+### 3. Launch the Web UI (Recommended)
 ```bash
-python3 main.py
+python3 -m streamlit run app.py
 ```
 
 ### 4. Start Chatting!
-Type natural language requests like:
+Open http://localhost:8501 and use the **🤖 Chat Interface** tab to type natural language requests like:
 - "Generate 10 mock users with random names and emails"
 - "Create 20 orders with amounts between $10-$500 in 2024"
 - "Give me 5 failed payment transactions"
 - "Export 15 products as CSV"
+
+### Alternative: Command Line Interface
+```bash
+python3 main.py
+```
+
+## 🌐 Web UI (Streamlit)
+
+For the best experience, use the Streamlit web interface with **natural language chat**:
+
+```bash
+python3 -m streamlit run app.py
+```
+
+Then open http://localhost:8501 in your browser.
+
+### 🤖 Natural Language Chat Interface
+The web UI features a **conversational chat interface** powered by Gradient AI:
+
+- **💬 Chat with the AI**: Type natural language requests
+- **🧠 Smart Understanding**: AI interprets your data generation needs
+- **⚡ Instant Generation**: Get SQL, CSV, or JSON output immediately
+- **🔄 Real-time Responses**: Interactive conversation flow
+
+**Example Chat Interactions:**
+- "Generate 10 mock users with random names and emails"
+- "Create 20 orders with amounts between $10-$500 in 2024"
+- "Give me 5 failed payment transactions"
+- "Export 15 products as CSV"
+- "Make 50 users with realistic addresses and phone numbers"
+
+### ⚙️ Manual Configuration Interface
+For precise control, use the manual configuration tab:
+
+- **🎯 One-Click Generation**: Quick buttons for common scenarios
+- **📊 Data Visualization**: Interactive tables and previews
+- **💾 Multiple Downloads**: SQL, CSV, and JSON export options
+- **⚙️ Easy Configuration**: Sidebar controls for all parameters
+- **🔒 Safety Indicators**: Clear safety features highlighted
+
+### Quick Actions in UI:
+- 👥 **10 Users** - Generate users with random names and emails
+- 🛒 **20 Orders ($10-$500)** - Create orders with specified amount range
+- 💳 **5 Failed Payments** - Generate failed payment transactions
+- 📦 **15 Products (CSV)** - Export products in CSV format
 
 ## Project Structure
 - `src/synthetic_data_generator.py` - Core data generator
 - `src/sql_tools.py` - SQL safety helpers (SELECT-only logic, formatting)
 - `src/agent.py` - Interactive agent (uses Gradient AI)
 - `src/config.py` - Env settings
-- `main.py` - Optional agent entrypoint
+- `main.py` - Command-line agent entrypoint
+- `app.py` - Streamlit web UI
 
 ## Relationship to Original Template
 

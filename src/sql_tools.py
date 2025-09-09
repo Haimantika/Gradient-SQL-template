@@ -4,8 +4,8 @@ import re
 from typing import List, Dict, Any, Optional, Tuple
 from sqlalchemy import create_engine, text, inspect
 from sqlalchemy.exc import SQLAlchemyError
-from .config import settings
-from .synthetic_data_generator import SyntheticDataGenerator
+from config import settings
+from synthetic_data_generator import SyntheticDataGenerator
 
 
 class SQLTools:
